@@ -77,6 +77,7 @@ SRCS = ft_atoi.c 		\
 		ft_toupper.c 	\
 		ft_strlcat.c 	\
 		ft_wstrlen.c \
+		get_next_line.c \
 
 
 BIN = $(SRCS:.c=.o)

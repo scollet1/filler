@@ -264,6 +264,7 @@ class Player
 
 	def initialize(path, char)
 		self.file_name = path
+		# puts path
 		self.piece_char = char
 		self.score = 0
 		self.live = 1

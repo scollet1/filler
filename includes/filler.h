@@ -14,10 +14,23 @@
 #define FILLER_H
 
 #include <stdlib.h>
-#include <unsitd.h>
+#include <unistd.h>
+#include <stdio.h>
+#include "../libft/libft.h"
 
 typedef struct s_player {
-  
-} t_player
+  int x, y;
+  int a, b;
+  char **map;
+  int **map_i;
+  char **piece;
+} t_player;
+
+void      fucking_crash_and_burn(char *loc);
+void      get_piece(int fd, char* this, t_player player);
+t_player  *init(char *this);
+void      init_piece(int fd, char* this, t_player player);
+t_player  *make_player();
+int       parse(int fd, char *this, t_player *player);
 
 #endif

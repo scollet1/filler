@@ -17,6 +17,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # define BUF_SIZE 424242
+# define BUFF_SIZE 42
+# define FT_MAX_FD 4096
 
 typedef struct		s_list
 {
@@ -28,6 +30,7 @@ typedef struct		s_list
 int					ft_atoi(const char *str);
 void				ft_bzero(void *s, size_t n);
 int					ft_count_words(const char *s, char c);
+int					get_next_line(const int fd, char **line);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);
