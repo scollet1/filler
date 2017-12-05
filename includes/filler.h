@@ -18,12 +18,19 @@
 #include <stdio.h>
 #include "../libft/libft.h"
 
+typedef struct s_piece {
+  int x, y;
+  t_piece *next;
+  t_piece *previous;
+  t_piece *root;
+} t_piece;
+
 typedef struct s_player {
   int x, y;
   int a, b;
   char **map;
   int **map_i;
-  char **piece;
+  t_piece *piece;
 } t_player;
 
 void      fucking_crash_and_burn(char *loc);

@@ -17,6 +17,10 @@ t_player  *make_player()
   t_player *new_player;
 
   new_player = (t_player*)malloc(sizeof(t_player));
+  new_player->piece = (t_piece*)malloc(sizeof(t_piece));
+  new_player->piece->next = NULL;
+  new_player->piece->previous = NULL;
+  new_player->piece->root = new_player->piece;
   return (new_player);
 }
 

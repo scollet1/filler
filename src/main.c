@@ -12,32 +12,80 @@
 
 #include "../includes/filler.h"
 
+int fits(t_player *player, int i, int j, int x)
+{
+  if (i >= player->y)
+    i = 0;
+  if (j >= player->x)
+    j = 0;
+  if (player->map[i + player->piece->y][j + player->piece->x] == '.')
+  {
+    // if (player->map[i + player->piece->y][j + player->piece->x] == '')
+    // {
+
+    // }
+    if (x > 1)
+    {
+      fits();
+    }
+  }
+  else if (player->map[i + player->piece->y][j + player->piece->x] == 'X' ||
+            player->map[i + player->piece->y][j + player->piece->x] == 'x')
+  {
+    return (fits(player, i + 1, j + 1, 1))
+  }
+  return (1);
+}
+
 char *fill_that_shit(t_player *player)
 {
   char *info = NULL;
+  int direction;
+  int offx;
+  int offy;
+  int i;
+  int j;
 
+  i = -1;
+  while (++i < player->a)
+  {
+    j = -1;
+    while (++j < player->b)
+    {
+      if (player->map_i[i][j] <= 1)
+      {
+        if (fits(player, i, j, 0))
+        {
 
+        }
+        else
+        {
+
+        }
+      }
+    }
+  }
   return (info);
 }
 
 void update_score(t_player *player, int score, int i, int j)
 {
   if (player->map_i[i + 1][j])
-    player->map_i[i][j] += score;
+    player->map_i[i + 1][j] += score;
   if (player->map_i[i - 1][j])
-    player->map_i[i][j] += score;
+    player->map_i[i - 1][j] += score;
   if (player->map_i[i + 1][j + 1])
-    player->map_i[i][j] += score;
+    player->map_i[i + 1][j + 1] += score;
   if (player->map_i[i + 1][j - 1])
-    player->map_i[i][j] += score;
+    player->map_i[i + 1][j - 1] += score;
   if (player->map_i[i][j + 1])
-    player->map_i[i][j] += score;
+    player->map_i[i][j + 1] += score;
   if (player->map_i[i][j - 1])
-    player->map_i[i][j] += score;
+    player->map_i[i][j - 1] += score;
   if (player->map_i[i - 1][j - 1])
-    player->map_i[i][j] += score;
-  if (player->map_i[i- 1][j + 1])
-    player->map_i[i][j] += score;
+    player->map_i[i - 1][j - 1] += score;
+  if (player->map_i[i - 1][j + 1])
+    player->map_i[i - 1][j + 1] += score;
 }
 
 void calculate_map(t_player *player)
