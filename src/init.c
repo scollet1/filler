@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/filler.h"
+#include "../includes/filler.h"
 
 t_player  *make_player()
 {
@@ -24,6 +24,13 @@ t_player  *make_player()
   return (new_player);
 }
 
+char which_player(char *this)
+{
+  if (ft_strstr(this, "filler"))
+    return ((ft_strstr(this, "p1") ? 'O' : 'X'));
+  return ('\0');
+}
+
 t_player *init(char *this)
 {
   int i;
@@ -32,22 +39,24 @@ t_player *init(char *this)
   t_player *player;
 
   player = (t_player*)malloc(sizeof(t_player));
+  if (!(player->p = which_player(this)))
+    fucking_crash_and_burn("init\n");
   get_next_line(0, &this);
   s = ft_strchr(this, ' ');
   i = ft_atoi(s) + 1;
-  player->x = i - 1;
+  player->y = i - 1;
   while (ft_isdigit(*s++));
   this = s;
   s = ft_strchr(this, ' ');
   j = ft_atoi(s);
-  player->y = j;
+  player->x = j;
   player->map = (char**)malloc(sizeof(char*)*player->y);
-  while (--i >= 0)
-    player->map[i] = (char*)malloc(sizeof(char)*player->x);
+  while (--j >= 0)
+    player->map[j] = (char*)malloc(sizeof(char)*player->x);
   return (player);
 }
 
-void init_piece(int fd, char* this, t_player player)
+int init_piece(int fd, char *this, t_player *player)
 {
   int lt;
   char *s;
@@ -55,17 +64,16 @@ void init_piece(int fd, char* this, t_player player)
   int j;
 
   if ((lt = get_next_line(fd, &this)) < 0)
-    return (NULL);
+    return (-1);
+  // ft_putstr("12 14\n");
   s = ft_strchr(this, ' ');
   i = ft_atoi(s) + 1;
-  player->a = i - 1;
+  player->b = i - 1;
   while (ft_isdigit(*s++));
   this = s;
   s = ft_strchr(this, ' ');
   j = ft_atoi(s);
-  player->b = j;
-  player->piece = (char**)malloc(sizeof(char*)*player->b);
-  while (--i >= 0)
-    player->piece[i] = (char*)malloc(sizeof(char)*player->a);
-  return ;
+  player->a = j;
+  player->piece = (struct s_piece*)malloc(sizeof(struct s_piece));
+  return (0);
 }
