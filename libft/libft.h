@@ -17,8 +17,8 @@
 # include <stdlib.h>
 # include <unistd.h>
 # define BUF_SIZE 424242
-# define BUFF_SIZE 42
-# define FT_MAX_FD 4096
+# define BUFF_SIZE 4242
+# define MAX_FD 4096
 
 typedef struct		s_list
 {
