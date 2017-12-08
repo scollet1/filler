@@ -12,7 +12,7 @@
 
 #include "../includes/filler.h"
 
-void fucking_crash_and_burn(char *loc)
+void expletive(char *loc)
 {
   perror("Something happened...\n\
           It was bad.");

@@ -12,17 +12,21 @@
 
 #include "../includes/filler.h"
 
+/*
+Initialize player;
+*/
+
 t_player  *make_player()
 {
   t_player *new_player;
 
   new_player = (t_player*)malloc(sizeof(t_player));
-  new_player->piece = (t_piece*)malloc(sizeof(t_piece));
-  new_player->piece->next = NULL;
-  new_player->piece->previous = NULL;
-  new_player->piece->root = new_player->piece;
   return (new_player);
 }
+
+/*
+Determine which player;
+*/
 
 char which_player(char *this)
 {
@@ -30,6 +34,10 @@ char which_player(char *this)
     return ((ft_strstr(this, "p1") ? 'O' : 'X'));
   return ('\0');
 }
+
+/*
+Initialize a board of variable size;
+*/
 
 t_player *init(char *this)
 {
@@ -40,7 +48,10 @@ t_player *init(char *this)
 
   player = (t_player*)malloc(sizeof(t_player));
   if (!(player->p = which_player(this)))
-    fucking_crash_and_burn("init\n");
+    expletive("init\n");
+  else
+    player->q = player->p + 32;
+  player->z = (player->p == 'X') ? 1 : -1;
   get_next_line(0, &this);
   s = ft_strchr(this, ' ');
   i = ft_atoi(s) + 1;
@@ -51,10 +62,14 @@ t_player *init(char *this)
   j = ft_atoi(s);
   player->x = j;
   player->map = (char**)malloc(sizeof(char*)*player->y);
-  while (--j >= 0)
-    player->map[j] = (char*)malloc(sizeof(char)*player->x);
+  while (--i >= 0)
+    player->map[i] = (char*)malloc(sizeof(char)*player->x);
   return (player);
 }
+
+/*
+Initialize a piece of variable size;
+*/
 
 int init_piece(int fd, char *this, t_player *player)
 {
@@ -65,15 +80,23 @@ int init_piece(int fd, char *this, t_player *player)
 
   if ((lt = get_next_line(fd, &this)) < 0)
     return (-1);
-  // ft_putstr("12 14\n");
+  dprintf(2, "piece before strch -> %s\n", this);
   s = ft_strchr(this, ' ');
-  i = ft_atoi(s) + 1;
-  player->b = i - 1;
+  dprintf(2, "piece after strch -> %s\n", s);
+  i = ft_atoi(s);
+  dprintf(2, "y dim -> %d\n", i);
+  player->b = i;
   while (ft_isdigit(*s++));
   this = s;
   s = ft_strchr(this, ' ');
   j = ft_atoi(s);
   player->a = j;
   player->piece = (struct s_piece*)malloc(sizeof(struct s_piece));
+  player->piece->next = NULL;
+  player->piece->previous = NULL;
+  // player->piece->root = (struct s_piece*)malloc(sizeof(struct s_piece));
+  // player->piece->root = player->piece;
+  // player->root = (struct s_piece*)malloc(sizeof(struct s_piece));
+  // player->root = player->piece;
   return (0);
 }

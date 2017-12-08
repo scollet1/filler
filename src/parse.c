@@ -16,64 +16,57 @@ int get_piece(int fd, char* this, t_player *player)
 {
   int i;
   int j;
-  int f;
   int lt;
-  char *s;
-  int offx;
-  int offy;
   char *tmp;
-  // FILE *fp;
+  int fuck;
+  t_piece *root;
 
   i = -1;
-  f = 0;
-  // fp = fopen("log.txt", "w+");
-  // fprintf(fp, "this %s\n", this);
+  fuck = 0;
+  root = player->piece;
   while (++i < player->b)
   {
     if ((lt = get_next_line(fd, &this)) < 0)
       return (-1);
-    // fprintf(fp, "this + 1 %s\n", this);
+    else if (lt == 0)
+      break ;
     tmp = ft_strdup(this);
-    // fprintf(fp, "this + 2 %s\n", this);
-    s = ft_strchr(this, ' ');
-    // tmp = s;
     j = -1;
-    // fprintf(fp, "tmp %s\n", tmp);
-    // fprintf(fp, "s %s\n", s);
-    // ft_putstr("12 14\n");
     while (++j < player->a)
     {
-      // fprintf(fp, "stuff %c, %s\n", *tmp, tmp);
+      // dprintf(2, "temporary -> %s\n", tmp);
       if (*tmp++ == '*')
       {
-        // fprintf(fp, "this + 3.1 %s\n", this);
-        if (!f)
-        {
-          // fprintf(fp, "this + 3.2 %s\n", this);
-          offx = j;
-          offy = i;
-          f = 1;
-        }
-        // fprintf(fp, "this + 4 %s\n", this);
-        player->piece->x = j - offx;
-        player->piece->y = i - offy;
+        fuck += 1;
+        player->piece->x = j;
+        player->piece->y = i;
+
+        // dprintf(2, "x, y -> %d, %d\nj, i, -> %d, %d\n",
+        // player->piece->x,
+        // player->piece->y,
+        // j, i);
+
         player->piece->next = (struct s_piece*)malloc(sizeof(struct s_piece));
         player->piece->next->previous = player->piece;
-        player->piece->next->root = player->piece->root;
+        // player->piece->next->root = (struct s_piece*)malloc(sizeof(struct s_piece));
+        // player->piece->next->root = player->piece->root;
         player->piece = player->piece->next;
         player->piece->next = NULL;
-        // ft_putstr("12 14\n");
       }
-      // fprintf(fp, "this + 5 %s\n", this);
     }
-    // ft_putstr("12 14\n");
-    // ft_bzero(this, ft_strlen(this));
-    // ft_bzero(tmp, ft_strlen(tmp));
   }
-  // fprintf(fp, "this + 6 %s\n", this);
-  // fclose(fp);
+  dprintf(2, "%d\n", fuck);
+  // while (player->piece->previous)
+    // player->piece = player->piece->previous;
+  // player->piece->next = NULL;
+  player->piece = root;
+  dprintf(2, "fugging OMG y, x -> %d, %d\n", player->piece->y, player->piece->x);
   return (0);
 }
+
+/*
+Parse the map;
+*/
 
 int parse(int fd, char *this, t_player *player)
 {
@@ -81,42 +74,25 @@ int parse(int fd, char *this, t_player *player)
   char *s;
   int i;
   char *tmp;
-  // FILE *fp;
 
-  // fp = fopen("log.txt", "w+");
   i = -1;
-  // fprintf(fp, "this %s\n", this);
-  lt = get_next_line(fd, &this);
+  if (get_next_line(fd, &this) < 0)
+    return (-1);
+  dprintf(2, "parsed\n");
   tmp = (char*)malloc(sizeof(char) * ft_strlen(this));
+  dprintf(2, "malloced\n");
   while (++i < player->y)
   {
     if ((lt = get_next_line(fd, &this)) < 0)
-    {
-      // fprintf(fp, "lt %d\n", lt);
-      return (lt);
-    }
-    // fprintf(fp, "this + 1 %s\n", this);
+      return (-1);
     tmp = ft_strdup(this);
     s = ft_strchr(this, ' ');
     tmp = s;
-    // ft_putstr("12 14\n");
     player->map[i] = ft_strdup(tmp);
-    // fprintf(fp, "this + 3 %s\n", this);
-    // ft_bzero(this, ft_strlen(this));
-    // ft_bzero(tmp, ft_strlen(tmp));
-    // ft_putstr("12 14\n");
-    // if (tmp)
-      // free(tmp);
   }
-  // ft_putstr("12 14\n");
-  // fprintf(fp, "this + 4 %s\n", this);
-  init_piece(0, this, player);
-  // fprintf(fp, "this + 5 %s\n", this);
-  // fclose(fp);
-  // ft_putstr("12 14\n");
-  get_piece(0, this, player);
-  // fprintf(fp, "this + 6 %s\n", this);
-  // ft_putstr("12 14\n");
-  // fclose(fp);
-  return (0);
+  if (init_piece(0, this, player) < 0)
+    expletive("parse\n");
+  if (get_piece(0, this, player) < 0)
+    expletive("parse\n");
+  return (lt);
 }
