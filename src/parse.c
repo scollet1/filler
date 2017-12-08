@@ -55,12 +55,14 @@ int get_piece(int fd, char* this, t_player *player)
       }
     }
   }
-  dprintf(2, "%d\n", fuck);
+  // dprintf(2, "what the fuquke -> %d\n", fuck);
+  player->piece->previous = NULL;
+  // dprintf(2, "playa k -> %d\n", player->piece->y);
   // while (player->piece->previous)
     // player->piece = player->piece->previous;
   // player->piece->next = NULL;
   player->piece = root;
-  dprintf(2, "fugging OMG y, x -> %d, %d\n", player->piece->y, player->piece->x);
+  // dprintf(2, "fugging OMG y, x -> %d, %d\n", player->piece->y, player->piece->x);
   return (0);
 }
 
@@ -73,6 +75,7 @@ int parse(int fd, char *this, t_player *player)
   int lt;
   char *s;
   int i;
+  int j;
   char *tmp;
 
   i = -1;
@@ -83,12 +86,14 @@ int parse(int fd, char *this, t_player *player)
   dprintf(2, "malloced\n");
   while (++i < player->y)
   {
+    j = -1;
     if ((lt = get_next_line(fd, &this)) < 0)
       return (-1);
     tmp = ft_strdup(this);
     s = ft_strchr(this, ' ');
     tmp = s;
-    player->map[i] = ft_strdup(tmp);
+    while (++j < player->x)
+      player->map[i][j] = *++tmp;
   }
   if (init_piece(0, this, player) < 0)
     expletive("parse\n");

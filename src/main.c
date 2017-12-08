@@ -38,15 +38,17 @@ int fits(t_player *player, int i, int j, int x)
   t_piece *root;
 
   root = player->piece;
-  while (root)
+  while (root->next)
   {
     // if (!root)
       // expletive("what the actual fuck\n");
-    dprintf(2, "%p\n", root);
+    // dprintf(2, "%p\n", root);
     t = i + (root->y - player->piece->y);
     r = j + (root->x - player->piece->x);
-    dprintf(2, "%d, %d, %d, %d\n",
-    player->piece->y, root->y, root->x, player->piece->x);
+    // dprintf(2, "%d, %d\n", t, r);
+    // dprintf(2, "%c\n", player->map[t][r]);
+    // if (t)
+    // player->piece->y, root->y, root->x, player->piece->x);
     if (t > -1 && t < player->y && r > -1 && r < player->x)
     {
       if (player->map[t][r] == '.' && x <= 1)
@@ -57,7 +59,7 @@ int fits(t_player *player, int i, int j, int x)
               player->map[t][r] == player->q)
       {
         x += 1;
-        dprintf(2, "we have overlap on %d, %d -> %d\n", t, r, x);
+        // dprintf(2, "we have overlap on %d, %d -> %d\n", t, r, x);
         root = root->next;
       }
       else
@@ -217,6 +219,10 @@ int main(void)
     if (player->piece)
       free(player->piece);
     dprintf(2, "successful frees\n");
+    // int i = -1;
+    // while (++i < player->y)
+      // free(player->map[i]);
+    // free(player->map);
     k = 0;
     // ft_bzero(&this, ft_strlen(this));
   }
