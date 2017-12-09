@@ -22,7 +22,6 @@ typedef struct s_piece {
   int x, y;
   struct s_piece *next;
   struct s_piece *previous;
-  // struct s_piece *root;
 } t_piece;
 
 typedef struct s_player {
@@ -30,16 +29,23 @@ typedef struct s_player {
   int a, b;
   char p;
   char q;
-  int z;
+  int zy;
+  int zx;
+  int co_y;
+  int co_x;
   char **map;
   int **map_i;
-  // t_piece *root;
   t_piece *piece;
 } t_player;
 
 void      expletive(char *loc);
+int      fatal_flying_guillotine(t_player *player);
+char      *fill_that_shit(t_player *player);
+char      *find_option(t_player *player);
+int       fits(t_player *player, int i, int j, int x);
 int       get_piece(int fd, char* this, t_player *player);
 t_player  *init(char *this);
+void    init_map_i(t_player *player);
 int       init_piece(int fd, char* this, t_player *player);
 t_player  *make_player();
 int       parse(int fd, char *this, t_player *player);

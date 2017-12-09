@@ -34,35 +34,20 @@ int get_piece(int fd, char* this, t_player *player)
     j = -1;
     while (++j < player->a)
     {
-      // dprintf(2, "temporary -> %s\n", tmp);
       if (*tmp++ == '*')
       {
         fuck += 1;
         player->piece->x = j;
         player->piece->y = i;
-
-        // dprintf(2, "x, y -> %d, %d\nj, i, -> %d, %d\n",
-        // player->piece->x,
-        // player->piece->y,
-        // j, i);
-
         player->piece->next = (struct s_piece*)malloc(sizeof(struct s_piece));
         player->piece->next->previous = player->piece;
-        // player->piece->next->root = (struct s_piece*)malloc(sizeof(struct s_piece));
-        // player->piece->next->root = player->piece->root;
         player->piece = player->piece->next;
         player->piece->next = NULL;
       }
     }
   }
-  // dprintf(2, "what the fuquke -> %d\n", fuck);
   player->piece->previous = NULL;
-  // dprintf(2, "playa k -> %d\n", player->piece->y);
-  // while (player->piece->previous)
-    // player->piece = player->piece->previous;
-  // player->piece->next = NULL;
   player->piece = root;
-  // dprintf(2, "fugging OMG y, x -> %d, %d\n", player->piece->y, player->piece->x);
   return (0);
 }
 
@@ -81,9 +66,7 @@ int parse(int fd, char *this, t_player *player)
   i = -1;
   if (get_next_line(fd, &this) < 0)
     return (-1);
-  dprintf(2, "parsed\n");
   tmp = (char*)malloc(sizeof(char) * ft_strlen(this));
-  dprintf(2, "malloced\n");
   while (++i < player->y)
   {
     j = -1;

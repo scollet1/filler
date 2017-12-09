@@ -4,7 +4,7 @@ FLAGS		=	-Wall -Werror -Wextra -I includes
 LIBRARY		=	libft
 LIBRARY_B	=	libft/build
 LIB_A		=	libft.a
-FILES		=	main.c error.c parse.c init.c
+FILES		=	main.c error.c parse.c init.c play.c
 
 SOURCES		=	$(addprefix src/, $(FILES))
 OBJECTS		=	$(addprefix build/, $(FILES:.c=.o))

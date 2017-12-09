@@ -35,6 +35,16 @@ char which_player(char *this)
   return ('\0');
 }
 
+void init_map_i(t_player *player)
+{
+  int i;
+
+  i = -1;
+  player->map_i = (int**)ft_memalloc(sizeof(int*)*player->y);
+  while (++i < player->y)
+    player->map_i[i] = (int*)ft_memalloc(sizeof(int)*player->x);
+}
+
 /*
 Initialize a board of variable size;
 */
@@ -51,7 +61,8 @@ t_player *init(char *this)
     expletive("init\n");
   else
     player->q = player->p + 32;
-  player->z = (player->p == 'X') ? 1 : -1;
+  player->zy = (player->p == 'X') ? 1 : -1;
+  player->zx = player->zy;
   get_next_line(0, &this);
   s = ft_strchr(this, ' ');
   i = ft_atoi(s) + 1;
@@ -61,6 +72,8 @@ t_player *init(char *this)
   s = ft_strchr(this, ' ');
   j = ft_atoi(s);
   player->x = j;
+  player->co_y = (player->p == 'X') ? 0 : player->y - 1;
+  player->co_x = (player->p == 'X') ? 0 : player->x - 1;
   player->map = (char**)malloc(sizeof(char*)*player->y);
   while (--i >= 0)
     player->map[i] = (char*)malloc(sizeof(char)*player->x);
@@ -80,11 +93,8 @@ int init_piece(int fd, char *this, t_player *player)
 
   if ((lt = get_next_line(fd, &this)) < 0)
     return (-1);
-  dprintf(2, "piece before strch -> %s\n", this);
   s = ft_strchr(this, ' ');
-  dprintf(2, "piece after strch -> %s\n", s);
   i = ft_atoi(s);
-  dprintf(2, "y dim -> %d\n", i);
   player->b = i;
   while (ft_isdigit(*s++));
   this = s;
@@ -94,9 +104,5 @@ int init_piece(int fd, char *this, t_player *player)
   player->piece = (struct s_piece*)malloc(sizeof(struct s_piece));
   player->piece->next = NULL;
   player->piece->previous = NULL;
-  // player->piece->root = (struct s_piece*)malloc(sizeof(struct s_piece));
-  // player->piece->root = player->piece;
-  // player->root = (struct s_piece*)malloc(sizeof(struct s_piece));
-  // player->root = player->piece;
   return (0);
 }

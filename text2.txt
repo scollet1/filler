@@ -1,0 +1,10 @@
+# -------------- VM  version 1.1 ------------- #
+#                                              #
+# 42 / filler VM Developped by: Hcao - Abanlin #
+#                                              #
+# -------------------------------------------- #
+launched resources/players/carli.filler
+launched resources/players/scollet.filler
+Player with X: error on input
+== O fin: 842
+== X fin: 946
