@@ -94,13 +94,13 @@ char *fill_that_shit(t_player *player)
   int i;
   int j;
 
-  i = (player->zy > 0) ? 0 : player->y - 1;
+  i = (player->zy < 0) ? 0 : player->co_y;
   while (i < player->y &&  i > -1)
   {
-    j = (player->zx > 0) ? 0 : player->x - 1;
+    j = (player->zx < 0) ? 0 : player->co_x;
     while (j < player->x && j > -1)
     {
-      if (player->map_i[i][j] == 0)
+      if (player->map_i[i][j] == player->zx + player->zy)
       {
         if (fits(player, i, j, 0))
         {
@@ -108,6 +108,7 @@ char *fill_that_shit(t_player *player)
           ft_strjoin(" ", ft_itoa(j - player->piece->x)));
           return (info);
         }
+        // update_p_z(player, i, j);
       }
       j += player->zx;
     }

@@ -38,6 +38,7 @@ typedef struct s_player {
   t_piece *piece;
 } t_player;
 
+int       update_p_z(t_player *player, int i, int j);
 void      expletive(char *loc);
 int      fatal_flying_guillotine(t_player *player);
 char      *fill_that_shit(t_player *player);

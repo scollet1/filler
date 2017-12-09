@@ -37,9 +37,16 @@ void update_score(t_player *player, int score, int i, int j)
 
 int update_p_z(t_player *player, int i, int j)
 {
-  player->zy = (i <= player->co_y) ? -1 : 1;
-  player->zx = (j <= player->co_x) ? -1 : 1;
+  if (player->zy < 0)
+    player->zy = (i >= player->co_y) ? -1 : 1;
+  else if (player->zy > 0)
+    player->zy = (i <= player->co_y) ? 1 : -1;
+  if (player->zx < 0)
+    player->zx = (j >= player->co_x) ? -1 : 1;
+  else if (player->zx > 0)
+    player->zx = (j <= player->co_x) ? 1 : -1;
   return (fatal_flying_guillotine(player));
+  // return (1);
 }
 
 void calculate_map(t_player *player)
@@ -58,7 +65,7 @@ void calculate_map(t_player *player)
       else if (player->map[i][j] == 'x' || player->map[i][j] == 'X')
         update_score(player, 1, i, j);
       else
-        update_score(player, 0, i, j);
+        update_score(player, player->zx + player->zy, i, j);
       if (player->map[i][j] == player->p || player->map[i][j] == player->q)
       {
         if (((player->zy > 0) ? i >= player->co_y : i <= player->co_y))
@@ -66,10 +73,14 @@ void calculate_map(t_player *player)
         if (((player->zx > 0) ? j >= player->co_x : j <= player->co_x))
           player->co_x = j;
       }
-      update_p_z(player, i, j);
+      // update_p_z(player, i, j);
     }
   }
 }
+
+/*
+Hey look, there's free stuff in here!
+*/
 
 void free_stuff(int op, t_player *player, char *this, char *info)
 {
