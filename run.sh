@@ -40,7 +40,9 @@ echo 25 - X
 
 echo 31 - O
 ./resources/filler_vm   -f resources/maps/map02 -p1 resources/players/scollet.filler -p2 resources/players/abanlin.filler > ../filler-visualizer/test31.txt
+# echo 32 - O
 ./resources/filler_vm   -f resources/maps/map02 -p1 resources/players/scollet.filler -p2 resources/players/carli.filler > ../filler-visualizer/test32.txt
+# echo 33 - O
 ./resources/filler_vm   -f resources/maps/map02 -p1 resources/players/scollet.filler -p2 resources/players/champely.filler > ../filler-visualizer/test33.txt
 ./resources/filler_vm   -f resources/maps/map02 -p1 resources/players/scollet.filler -p2 resources/players/grati.filler > ../filler-visualizer/test34.txt
 ./resources/filler_vm   -f resources/maps/map02 -p1 resources/players/scollet.filler -p2 resources/players/hcao.filler > ../filler-visualizer/test35.txt

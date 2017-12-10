@@ -6,7 +6,7 @@
 /*   By: scollet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/08 11:56:10 by scollet           #+#    #+#             */
-/*   Updated: 2017/12/09 16:28:42 by scollet          ###   ########.fr       */
+/*   Updated: 2017/12/09 16:58:46 by scollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ int		fatal_flying_guillotine(t_player *player)
 	j = player->co_x;
 	while (j < player->x && j > -1)
 	{
-		player->map_i[i][j] = player->zz;
+		player->map_i[i][j] = -player->zz;
 		j += player->zx;
 	}
 	j = player->co_x;
 	while (i < player->y && i > -1)
 	{
-		player->map_i[i][j] = player->zz;
+		player->map_i[i][j] = -player->zz;
 		i += player->zy;
 	}
 	return (1);
@@ -87,9 +87,7 @@ int		fits(t_player *player, int i, int j, int x)
 		else
 			return (0);
 	}
-	if (x != 1)
-		return (0);
-	return (1);
+	return ((x == 1) ? x : 0);
 }
 
 char	*find_option(t_player *player)
@@ -99,7 +97,7 @@ char	*find_option(t_player *player)
 	int		j;
 
 	i = (player->zy > 0) ? 0 : player->y - 1;
-	while (i < player->y &&  i > -1)
+	while (i < player->y && i > -1)
 	{
 		j = (player->zx > 0) ? 0 : player->x - 1;
 		while (j < player->x && j > -1)
@@ -125,27 +123,27 @@ char	*fill_that_shit(t_player *player)
 	int		j;
 
 	i = (player->zy < 0) ? 0 : player->y;
-	t = 3;
-	while (i < player->y && i > -1)
+	while (i < player->y && i > -1 && (t = 3) == 3)
 	{
 		j = (player->zx < 0) ? 0 : player->x;
 		while (j < player->x && j > -1)
 		{
-			if ((player->zz <= 0) ? player->map_i[i][j]
-			<= 0 : player->map_i[i][j] >= 0)
-			if (t <= scan(player, i, j, 0))
-			{
-				if (fits(player, i, j, 0))
+			if ((player->zz < 0) ? player->map_i[i][j] < 0
+			: player->map_i[i][j] > 0)
+				if (t <= scan(player, i, j, 0))
 				{
-					info = ft_strjoin(ft_itoa(i - player->piece->y),
-					ft_strjoin(" ", ft_itoa(j - player->piece->x)));
-					return (info);
+					if (fits(player, i, j, 0))
+					{
+						info = ft_strjoin(ft_itoa(i - player->piece->y),
+						ft_strjoin(" ", ft_itoa(j - player->piece->x)));
+						return (info);
+					}
+					update_p_z(player, i, j);
 				}
-				update_p_z(player, i, j);
-			}
 			j += player->zx;
 		}
 		i += player->zy;
+		// update_p_z(player, i, j);
 	}
 	return (find_option(player));
 }

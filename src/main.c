@@ -6,7 +6,7 @@
 /*   By: scollet <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/01 15:30:21 by scollet           #+#    #+#             */
-/*   Updated: 2017/12/09 16:23:13 by scollet          ###   ########.fr       */
+/*   Updated: 2017/12/09 16:48:36 by scollet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,46 @@
 
 void	update_score(t_player *player, int score, int i, int j)
 {
-	player->map_i[i][j] = score;
-	if (i + 1 < player->y && j < player->x)
-		player->map_i[i + 1][j] = score;
-	if (j < player->x && i - 1 > -1)
-		player->map_i[i - 1][j] = score;
-	if (i + 1 < player->y && j + 1 < player->x)
-		player->map_i[i + 1][j + 1] = score;
-	if (i + 1 < player->y && j - 1 > -1)
-		player->map_i[i + 1][j - 1] = score;
-	if (i < player->y && j + 1 < player->x)
-		player->map_i[i][j + 1] = score;
-	if (i < player->y && j - 1 > -1)
-		player->map_i[i][j - 1] = score;
-	if (i - 1 > -1 && j - 1 > -1)
-		player->map_i[i - 1][j - 1] = score;
-	if (j + 1 < player->x && i - 1 > -1)
-		player->map_i[i - 1][j + 1] = score;
+	while (j < player->x && j > -1)
+	{
+		player->map_i[i][j] = score;
+		j += player->zx;
+	}
+	while (i < player->y && i > -1)
+	{
+		player->map_i[i][j] = score;
+		i += player->zy;
+	}
+	// if (i + 1 < player->y && j < player->x)
+	// 	player->map_i[i + 1][j] = score;
+	// if (j < player->x && i - 1 > -1)
+	// 	player->map_i[i - 1][j] = score;
+	// if (i + 1 < player->y && j + 1 < player->x)
+	// 	player->map_i[i + 1][j + 1] = score;
+	// if (i + 1 < player->y && j - 1 > -1)
+	// 	player->map_i[i + 1][j - 1] = score;
+	// if (i < player->y && j + 1 < player->x)
+	// 	player->map_i[i][j + 1] = score;
+	// if (i < player->y && j - 1 > -1)
+	// 	player->map_i[i][j - 1] = score;
+	// if (i - 1 > -1 && j - 1 > -1)
+	// 	player->map_i[i - 1][j - 1] = score;
+	// if (j + 1 < player->x && i - 1 > -1)
+	// 	player->map_i[i - 1][j + 1] = score;
 }
 
 int		update_p_z(t_player *player, int i, int j)
 {
-	if (player->zy < 0 && player->zz <= 0)
-		player->zy = (i <= player->co_y) ? -1 : 1;
-	else if (player->zy > 0 && player->zz >= 0)
-		player->zy = (i >= player->co_y) ? 1 : -1;
-	if (player->zx < 0 && player->zz <= 0)
-		player->zx = (j <= player->co_x) ? -1 : 1;
-	else if (player->zx > 0 && player->zz >= 0)
-		player->zx = (j >= player->co_x) ? 1 : -1;
+	if (player->zy < 0)
+		player->zy = (i <= player->y / 2) ? -1 : 1;
+	else if (player->zy > 0)
+		player->zy = (i >= player->y / 2) ? -1 : 1;
+	if (player->zx < 0)
+		player->zx = (j <= player->x / 2) ? -1 : 1;
+	else if (player->zx > 0)
+		player->zx = (j >= player->x / 2) ? -1 : 1;
 	return (fatal_flying_guillotine(player));
+	// return (1);
 }
 
 void	calculate_map(t_player *player)
@@ -53,7 +63,7 @@ void	calculate_map(t_player *player)
 
 	i = -1;
 	init_map_i(player);
-	while (++i < player->y && (j = -1) == -1) /* Savin' lines like a champ */
+	while (++i < player->y && (j = -1) == -1)
 	{
 		while (++j < player->x)
 		{
@@ -63,24 +73,21 @@ void	calculate_map(t_player *player)
 				update_score(player, 1, i, j);
 			else
 				update_score(player, 0, i, j);
-			if (player->map[i][j] == player->p || player->map[i][j] == player->q)
+			if (player->map[i][j] == player->p ||
+				player->map[i][j] == player->q)
 			{
 				if (((player->zy > 0) ? i >= player->co_y : i <= player->co_y))
 					player->co_y = i;
-				else
-					player->co_y = i / 2;
 				if (((player->zx > 0) ? j >= player->co_x : j <= player->co_x))
 					player->co_x = j;
-				else
-					player->co_x = j / 2;
+				update_p_z(player, i, j);
 			}
-			update_p_z(player, i, j);
 		}
 	}
 }
 
 /*
-Hey look, there's free stuff in here!
+** Hey look, there's free stuff in here!
 */
 
 void	free_stuff(int op, t_player *player, char *this, char *info)
